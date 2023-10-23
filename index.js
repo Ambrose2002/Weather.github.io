@@ -46,3 +46,10 @@ async function checkWeather(city){
 searchButton.addEventListener('click', () => {
     checkWeather(searchBox.value)
 });
+
+searchBox.addEventListener("keypress", (event)=> {
+    if (event.keyCode === 13) { // key code of the keybord key
+        event.preventDefault();
+	    checkWeather(searchBox.value);
+    }
+});
