@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather App</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Merriweather+Sans&family=Roboto+Slab:wght@700&family=Space+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
     <section class="content">
@@ -12,6 +13,13 @@
             <div class="search">
                 <input type="text" placeholder="Enter city or region" spellcheck = 'false'>
                 <button><img src="images/search.png" alt=""></button>
+                <span class="unit">°C</span>
+                <label class="switch">
+                    <input type="checkbox" class="accept" id="accept" name="accept" value="yes">
+                    <span class="slider round"></span>
+                </label>
+                <span class="unit">°F</span>
+                
             </div>
             <div class="error">
                 <p>Invalid city name</p>
@@ -38,10 +46,9 @@
                 </div>
             </div>
         </div>
-    </section>
-
-    <section class="message">
-        
+        <div class="message">
+            <span>To get the weather information as well as personalized clothing recommendations, simply enter your location!</span>
+        </div>
     </section>
     
     <div>
