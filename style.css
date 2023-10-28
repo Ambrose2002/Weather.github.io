@@ -7,7 +7,7 @@
 }
 
 body{
-    background-image: url("images/rainy_background.jpeg");
+    background-image: url("images/misty_background.jpeg");
     background-repeat: no-repeat;
     background-size: cover;
     -webkit-transition: background 1s;
@@ -40,7 +40,7 @@ body{
 .message{
     grid-area: suggestion;
     color: #ebfffc;
-    font-size: 60px;
+    font-size: 40px;
     font-family: 'Roboto Slab', serif;
     font-weight: 700;
     margin-right: 4%;

@@ -59,7 +59,7 @@ async function checkWeather(city){
     else if (data.weather[0].main === "Clear"){
         weatherIcon.src = "images/clear.png";
         background.style.backgroundImage = 'url("images/clear_background.jpeg")';
-        document.querySelector('.message').style.color = "#091a2e"
+        document.querySelector('.message').style.color = "yellow"
     }
     else if (data.weather[0].main === "Rain"){
         weatherIcon.src = "images/rain.png";
