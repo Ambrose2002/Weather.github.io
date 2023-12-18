@@ -1,3 +1,4 @@
+// import rec from "./chatgpt.js";
 const apiKey = "cbc079521073340dc72ab4388cd0aee4";
 const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
 
@@ -7,6 +8,60 @@ const weatherIcon = document.querySelector('.weather-icon');
 const background = document.querySelector('body');
 const checkbox = document.querySelector("#accept");
 
+const token = "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"
+
+const rec = async (city, temp, humidity, wind_speed) => {
+    var prompt = `I live in ${city}. The current temperature is ${temp}, humidity is ${humidity}, and wind speed is ${wind_speed}`
+    prompt += `Give me personalized clothing recomendations based on this. The recommendation must strictly be less than 4 sentences long`
+    prompt += `Don't mention the temperature, humidity and wind speed in your response`
+    try {
+        const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST", 
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({
+            "model": "gpt-3.5-turbo",
+            "messages": [
+            {
+                "role": "system",
+                "content": prompt
+            },
+            {
+                "role": "user",
+                "content": "Hello!"
+            }
+            ]
+        })
+        })
+        if (response.ok){
+        const jsonResponse = await response.json();
+        var i = 0;
+        var speed = 10;
+        document.querySelector('.message span').innerHTML = "";
+        function typeWriter() {
+            if (i < txt.length) {
+                document.querySelector('.message span').innerHTML += txt.charAt(i);
+                i++;
+                setTimeout(typeWriter, speed);
+                }
+        }
+        var message = jsonResponse.choices[0].message.content
+        const txt = message
+        document.querySelector('.message').addEventListener("load", typeWriter());
+        document.querySelector('.message').style.fontSize = '40px'
+        console.log(message)
+
+        }
+        else{
+        throw new Error("Request failed!");
+        }
+    }
+    catch(error){
+        console.log(error)
+    }
+}
 async function checkWeather(city){
     const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
     var data = await response.json();
@@ -74,51 +129,27 @@ async function checkWeather(city){
         background.style.backgroundImage = 'url("images/misty_background.jpeg")';
     }
 
-
-    var i = 0;
-    var speed = 10;
-
-
-    function typeWriter() {
-    if (i < txt.length) {
-        document.querySelector('.message span').innerHTML += txt.charAt(i);
-        i++;
-        setTimeout(typeWriter, speed);
-        }
-    }
-
-
-    if (temperature < 16){
-        document.querySelector('.message span').innerHTML = "";
-        var txt = "Hey there, when it's chilly outside, it's all about staying cozy. Opt for a winter coat or parka to keep the cold at bay. Layer up with a warm sweater or thermal layers under your long-sleeve shirts, and don't forget those trusty thick pants or jeans!"
-        document.querySelector('.message').addEventListener("load", typeWriter());
-        document.querySelector('.message').style.fontSize = '40px'
-    }
-    else if (temperature >= 16){
-        document.querySelector('.message span').innerHTML = "";
-        var txt = "Hey, it's a scorcher out there! To beat the heat, go for lightweight, loose-fitting clothing. Reach for those comfy T-shirts or tank tops and pair them with shorts or skirts for that summer vibe."
-        document.querySelector('.message').addEventListener("load", typeWriter(txt));
-        document.querySelector('.message').style.fontSize = '40px'
-    }
-    else if(data.weathr[0].main === 'Snow'){
-        document.querySelector('.message span').innerHTML = "";
-        var txt = "When the snow starts falling, it's time to bundle up! Grab an insulated and waterproof winter coat to stay warm and dry. Layer up with snow pants or insulated trousers and thermal layers."
-        document.querySelector('.message').addEventListener("load", typeWriter(txt));
-        document.querySelector('.message').style.fontSize = '40px'
-    }
-
-
 };
 
 
 searchButton.addEventListener('click', () => {
     checkWeather(searchBox.value)
+    const city = searchBox.value;
+    const temperature = document.querySelector(".temp").innerHTML;
+    const humidity = document.querySelector(".humidity").innerHTML;
+    const wind = document.querySelector(".wind").innerHTML;
+    rec(city, temperature, humidity, wind)
 });
 
 
 searchBox.addEventListener("keypress", (event)=> {
-    if (event.keyCode === 13) { // key code of the keybord key
+    if (event.keyCode === 13) { 
         event.preventDefault();
 	    checkWeather(searchBox.value);
+        const city = searchBox.value;
+        const temperature = document.querySelector(".temp").innerHTML;
+        const humidity = document.querySelector(".humidity").innerHTML;
+        const wind = document.querySelector(".wind").innerHTML;
+        rec(city, temperature, humidity, wind)
     }
 });
